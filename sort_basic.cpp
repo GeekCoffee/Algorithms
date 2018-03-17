@@ -21,7 +21,7 @@ void SelectionSort(int arr[] , int n){
 void InsertionSort(int arr[] , int n){
 	for(int i = 1; i < n; i++){
 		int e = arr[i];
-		int j; //´æ´¢eºÏÊÊ¸²¸ÇµÄÎ»ÖÃ 
+		int j;
 		for(j = i; j > 0 && e < arr[j-1]; j--)
 			arr[j] = arr[j-1];
 		arr[j] = e;
