@@ -1,7 +1,6 @@
-# Review my data-structure and Algorithms database
+# Review my data-structure and Algorithms
 
 ### Directory content:
-
 #### (1) Linear structures: array , stack , queue 
 #### (2) Semilinear structures: binary search tree(BST), Spaly, B-tree, hash-tree, red-black tree, Trie, binary heap(priority queue)
 #### (3) Nonlinear structures: simple graph, hashmap
