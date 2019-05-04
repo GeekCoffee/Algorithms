@@ -1,6 +1,6 @@
 package com.geektech.linear_structure.queue;
 
-import com.geektech.linear_structure.base.Vector;
+import com.geektech.linear_structure.base.ArrayList;
 
 /**
  *  Queue,  date = 4/26 2019 ,  author = chensheng
@@ -19,53 +19,53 @@ import com.geektech.linear_structure.base.Vector;
  */
 public class ArrayQueue<E> implements Queue<E> {
 
-    private Vector<E> vector;
+    private ArrayList<E> arrayList;
 
     public ArrayQueue(int capacity){
-        vector = new Vector<>(capacity);
+        arrayList = new ArrayList<>(capacity);
     }
 
     public ArrayQueue(){
-        vector = new Vector<>();
+        arrayList = new ArrayList<>();
     }
 
 
     public int getCapacity(){
-        return vector.getCapacity();
+        return arrayList.getCapacity();
     }
 
     @Override
     public int getSize() {
-        return vector.getSize();
+        return arrayList.getSize();
     }
 
     @Override
     public void enQueue(E e) {
-        vector.addLast(e);
+        arrayList.addLast(e);
     }
 
     @Override
     public E deQueue() {
-        return vector.removeFirst();
+        return arrayList.removeFirst();
     }
 
     @Override
     public boolean isEmpty() {
-        return vector.isEmpty();
+        return arrayList.isEmpty();
     }
 
     @Override
     public E getFront() {
-        return vector.getFirst();
+        return arrayList.getFirst();
     }
 
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder();
         str.append("queue: front [");
-        for(int i = 0; i < vector.getSize(); i++){
-            str.append(vector.get(i));
-            if(i != vector.getSize()-1)
+        for(int i = 0; i < arrayList.getSize(); i++){
+            str.append(arrayList.get(i));
+            if(i != arrayList.getSize()-1)
                 str.append(",");
         }
         str.append("] tail");

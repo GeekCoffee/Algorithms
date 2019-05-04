@@ -1,6 +1,6 @@
 package com.geektech.linear_structure.stack;
 
-import com.geektech.linear_structure.base.Vector;
+import com.geektech.linear_structure.base.ArrayList;
 
 /**
  *  underlying implementation of Stack,  date = 4/26 2019 ,  author = chensheng
@@ -16,55 +16,55 @@ import com.geektech.linear_structure.base.Vector;
  *  栈的应用：回撤功能、程序调用中的系统栈、计算式子的计算、括号匹配、递归等
  *
  */
-public class MyStack<E> implements Stack<E>{
+public class ArrayStack<E> implements Stack<E>{
 
-    private Vector<E> vector;
+    private ArrayList<E> arrayList;
 
-    public MyStack(int capacity){
-        vector = new Vector<E>(capacity);
+    public ArrayStack(int capacity){
+        arrayList = new ArrayList<E>(capacity);
     }
 
-    public MyStack(){
-        vector = new Vector<E>();
+    public ArrayStack(){
+        arrayList = new ArrayList<E>();
     }
 
     @Override
     public int getSize() {
-        return vector.getSize();
+        return arrayList.getSize();
     }
 
 
     public int getCapacity(){
-        return vector.getCapacity();
+        return arrayList.getCapacity();
     }
 
     @Override
     public boolean isEmpty() {
-        return vector.isEmpty();
+        return arrayList.isEmpty();
     }
 
     @Override
     public void push(E e)  {
-        vector.addLast(e);
+        arrayList.addLast(e);
     }
 
     @Override
     public E pop() {
-        return vector.removeLast();
+        return arrayList.removeLast();
     }
 
     @Override
     public E peek() {
-        return vector.getLast();
+        return arrayList.getLast();
     }
 
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder();
         str.append("stack: [");
-        for(int i = 0; i < vector.getSize(); i++){
-            str.append(vector.get(i));
-            if(vector.getSize()-1 != i)
+        for(int i = 0; i < arrayList.getSize(); i++){
+            str.append(arrayList.get(i));
+            if(arrayList.getSize()-1 != i)
                 str.append(",");
         }
         str.append(" ->");

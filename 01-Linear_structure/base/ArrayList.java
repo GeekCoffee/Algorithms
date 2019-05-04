@@ -1,6 +1,7 @@
 package com.geektech.linear_structure.base;
 /**
- *  underlying implementation of Vector,  date = 4/19 2019 ,  author = chensheng
+ *  underlying implementation of ArrayList,  date = 4/19 2019 ,  author = chensheng
+ *  ArrayList 就是 ArrayList
  *  ADT: 构造器：constructor2个  => O(c)
  *        基本：getSize, getCapacity, isEmpty => O(1)
  *        增加：add(index,e), addFirst(e), addLast(e) => O(n)
@@ -42,7 +43,7 @@ package com.geektech.linear_structure.base;
  *           2）8>>>1(8/2) = 4, 8>>>2(8/4) = 2 , 8>>>3(8/8) = 1,
  */
 
-public class Vector<E> {
+public class ArrayList<E> {
 
     private E[] data;  //底层维护一个数组
     private int size;  //实际容量, 利用 capacity = data.length功能，让java帮维护一个capacity数组
@@ -63,7 +64,7 @@ public class Vector<E> {
      * constructor-1
      * @param capacity
      */
-    public Vector(int capacity){
+    public ArrayList(int capacity){
         data = (E[])new Object[capacity];  //强制类型转换
         this.size = 0;
     }
@@ -71,7 +72,7 @@ public class Vector<E> {
     /**
      * 无参数constructor, 默认有10个元素容量
      */
-    public Vector(){
+    public ArrayList(){
         this(10);
         this.size = 0;
     }
@@ -255,7 +256,7 @@ public class Vector<E> {
     @Override
     public String toString(){
         StringBuffer str = new StringBuffer();
-        str.append(String.format("Vector: size=%d , capactiy=%d \n",this.size,this.data.length));
+        str.append(String.format("ArrayList: size=%d , capactiy=%d \n",this.size,this.data.length));
         str.append("[");
         for(int i=0; i < size; i++){
             str.append(data[i]);
