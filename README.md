@@ -1,4 +1,4 @@
-# Review my data-structure and Algorithms
+# Review data-structures and algorithms
 
 *  Linear structures: Vector,ArrayList , Stack , Queue , LinkedList etc.
 *  Semilinear structures: Binary search tree(BST), Spaly, B-tree, Hash-tree, Red-black tree, Trie, Binary heap(Qriority queue)
