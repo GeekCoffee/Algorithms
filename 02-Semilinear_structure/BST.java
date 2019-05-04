@@ -8,16 +8,17 @@ import com.geektech.linear_structure.stack.LinkedStack;
 
 /**
  *  BinarySearchTree - BST,  date = 1/5 2019 ,  author = chensheng
- *  ADT: 构造器：constructor1个  => O(c)
+ *  ADT: 构造器：constructor1个，包含count计数器  => O(c)
  *        基本：getSize, isEmpty => O(1)
  *        增加：add(e)，add2(e)
  *        查询：contains(e),findMax, findMin()
- *        删除：removeMin, removeMax, remove(e)
+ *        删除：removeMin, removeMax,
+ *             remove(e)：使用了Hibbard提出的Hibbard Deletion算法，1962年
  *        遍历：preOrderRecur,inOrderRecur,postOrderRecur,levelOrder-借助queue-图的广度优先遍历
  *        非递归：preOrder_DP,preOrder_DP_Command,inOrder_DP_Command,postOrder_DP_Command
  *        时间复杂度：O(n)，取决于node的数量; 空间复杂度：O(h),取决于树的高度
+ *        Z字形打印BST：printBST()-private-printBST-getSpace , 参考左神的代码
  *        //TODO  Morris遍历
- *        Z字形打印BST：
  *
  *
  *
@@ -27,7 +28,7 @@ import com.geektech.linear_structure.stack.LinkedStack;
  *  关键点：1）层序遍历中，出队后的元素要马上入队其的左右孩子！
  *        2）remove最大值或者最小值，用递归实现，用小数据手工模拟一下过程，就知道了怎么变化的了,
  *         有可能remove的是root，所以有可能重构树
- *       3）一直向左走，直到走不动了，就是最小值，不一定是叶子节点，有可能是根节点、或者中间节点。
+ *       3）findMin,一直向左走，直到走不动了，就是最小值，不一定是叶子节点，有可能是根节点、或者中间节点。
  *
  *  其他：1）前中后遍历都是图的深度优先遍历，层序遍历是图的广度优先遍历
  *       2）广度优先遍历的意义在于：①更快找到问题的解  ②常用于算法设计中的-最短路径
@@ -39,10 +40,12 @@ public class BST<E extends Comparable<E>>{
     private class Node{
         public E e;
         public Node left, right;
+        public int count; //值重复的节点数
         public Node(E e){
             this.e = e;
             left = null;
             right = null;
+            count = 1;
         }
     }
 
@@ -83,12 +86,15 @@ public class BST<E extends Comparable<E>>{
 
     //以node为根节点的BST
     private void add(Node node, E e){
-        if(node.e.compareTo(e) == 0) //BST中已经存在此元素
+        if(node.e.compareTo(e) == 0){ //BST中已经存在此元素
+            node.count ++; //维护一下count值，重复元素就+1
             return;
+        }
+
         else if(node.e.compareTo(e) > 0 && node.left == null){ //当node比e大，且node.left为null时
             node.left = new Node(e);
             size ++;
-        }else if(node.e.compareTo(e) < 0 && node.right == null){ //当node比e小，且node.rigth为null时
+        }else if(node.e.compareTo(e) <= 0 && node.right == null){ //当node比e小，且node.rigth为null时
             node.right = new Node(e);
             size ++;
         }
@@ -375,6 +381,101 @@ public class BST<E extends Comparable<E>>{
 
 
 
+    /**
+     * 当e有左右子树的时候，使用Hibbard提出的Hibbard Deletion
+     * 1)设待删除元素为d, 找到s = findMin(d->rigth)
+     * 2)s是d的后继元素，当然也可以使用d的前驱最大的元素
+     * 3)s->rigth = removeMin(d->right) //返回待删除元素的右子树中删除了最小元素min，之后的root索引
+     * 4)s->left = d->left
+     * 5)s是代替d的新节点
+     * @param e
+     */
+    public void remove(E e){
+       root = remove(root, e);
+    }
+
+    private Node remove(Node node, E e){
+        if(node == null) //递归基，没有找到e元素，或者root为null
+            return null;
+
+        //先找到待删除节点, 以node为根的二叉树
+        if(node.e.compareTo(e) > 0){ // 若传入的e比node.e小，则说明待删除的节点在左子树中,向左探索
+            node.left = remove(node.left, e); //若没有找到e，则node.left还是null的，返回node，BST结构不变
+            return node;
+        }
+        else if(node.e.compareTo(e) < 0){
+            node.right = remove(node.right, e);
+            return node;
+        }
+        else{ // e == node.e , 已经找到待删除节点
+
+            //情况1：当待删除节点只有右子树，左子树为null时 or 左右子树都为null时
+            //复用removeMin()算法
+            if(node.left == null){
+                Node rightNode = node.right;
+                node.right = null;
+                size --;
+                return rightNode; // 返回待删除元素的右子树索引
+            }
+
+
+            //情况2：当待删除节点只有左子树,右子树为null时 or 左右子树都为null时
+            //复用removeMax()算法
+            if(node.right == null){
+                Node leftNode = node.left;
+                node.left = null;
+                size --;
+                return leftNode;
+            }
+
+            //情况3：当待删除节点有左右子树时，使用Hibbard Deletion - 1962年
+            //successor是继承者的意思，取代待删除节点的位置，以保持BST的特性
+            //不用size--了，因为在removeMin中已经删除了一个元素了，并且size--了
+            Node successor = findMin(node.right);   //step1：找到e右子树中元素最小的元素，并赋给successor
+            successor.right = removeMin(node.right); //step2：删除e右子树中最小的元素，并把root句柄赋值给successor
+            successor.left = node.left; // step3：把待删除节点e的左子树索引赋值给successor.left
+            node.left = node.right = null; // step4：把待删除节点置为null，GC会自动把它从内存在回收起来，就达到删除的目的了
+            return successor;
+        }
+
+    }
+
+
+    /**
+     * 思路：1）先打印右子树，再打印根节点，最后打印左子树
+     *      2）console输出的是BST逆时针转90度的结果
+     */
+    public void printBST(){
+        printBST(root, 0, "H", 17); // 默认是17个字符
+    }
+
+    //获取空格数的API函数
+    public String getSpace(int n){
+        StringBuilder str = new StringBuilder();
+        for(int i = 0; i < n; i ++)
+            str.append(" ");
+        return str.toString();
+    }
+
+    private void printBST(Node node, int height, String to,int len){
+        if(node == null) // 递归基
+            return;
+        printBST(node.right, height+1, "v", len); //先递归打印右子树，右子树节点用v来表示
+        String val = to + node.e + to;   //用字符串拼成一个直观的节点，目前只包含节点的字符数
+        int lenM = val.length();   //得到节点的字符长度，节点的长度是动态变化的，因为数值不同
+        int lenL = (len - lenM) >> 1; //得到节点之前的空格字符数，用移位运算，是CPU中的除法器消耗时钟周期过长
+        int lenR = len - lenM - lenL; // 得到节点之后的空格字符数
+        val = getSpace(lenL) + val + getSpace(lenR); // 每一行的字符串，已包含所有字符
+        System.out.println(getSpace(height * len) + val); // 打印val之前要设置height的空格，参数也可以是heigth*len/3更紧凑一些
+        printBST(node.left, height+1, "^", len); //递归打印左子树，左子树节点用^来表示
+
+    }
+
+
+
+
+
+    //在mani函数中测试你的代码
     public static void main(String[] args){
         int[] nums = {3,4,5,1,2,0};
         BST<Integer> bst = new BST<>();
@@ -385,8 +486,8 @@ public class BST<E extends Comparable<E>>{
 //        System.out.println();
 //        bst.preOrder_DP_Command();
 
-          bst.inOrderRecur();
-          System.out.println();
+//          bst.inOrderRecur();
+//          System.out.println();
 
 //        bst.inOrder_DP_Command();
 //        bst.postOrderRecur();
@@ -398,9 +499,10 @@ public class BST<E extends Comparable<E>>{
 //        Integer max = bst.findMax();
 //        System.out.println(max);
 
-          bst.removeMax();
-          bst.inOrderRecur();
-          System.out.println();
+//          bst.remove(3); // 尝试删除根节点root
+//          bst.inOrderRecur();
+//          System.out.println();
+        bst.printBST();
     }
 
 }
