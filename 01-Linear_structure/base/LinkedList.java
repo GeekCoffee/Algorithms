@@ -4,7 +4,7 @@ package com.geektech.linear_structure.base;
  *  ADT: 构造器：Node-constructor3个 ,LinkedList-constructor1个
  *        基本：getSize, isEmpty =>  O(1)
  *        增加：add , addLast ==> 渐进复杂度 O(n) , addFirst ==> 渐进复杂度O(1)
- *        删除：
+ *        删除：remove(i),removeFirst(), removeLast(), removeElement(e)
  *        查找：contains、get、getLast ==> 渐进复杂度 O(n) ， getFirst ==> O(1)
  *        替换：set ==> O(n)
  *
@@ -44,7 +44,7 @@ public class LinkedList<E> {
         }
     }
 
-    private Node dummyHead;  //虚拟头结点，在内存中真正存在的，用于更方便插入操作，真正的头结点在dummyHead节点之后
+    private Node dummyHead;  //虚拟头结点，在内存中真正存在的，用于更方便插入操作，真正的头结点是dummyHead.next
     private int size;
 
     public LinkedList(){
@@ -83,7 +83,7 @@ public class LinkedList<E> {
 
     public void addFirst(E e){
         add(0, e);
-    }
+}
 
     public void addLast(E e){
         add(size, e);
@@ -166,6 +166,23 @@ public class LinkedList<E> {
         return remove(size-1);
     }
 
+    public void removeElement(E e){ //删除单向链表中有e的元素，有可能有重复的元素
+        Node prev = dummyHead;
+        Node cur = dummyHead.next;
+        while(cur != null){
+            if(cur.e.equals(e)) { //做删除操作
+                prev.next = cur.next;
+                cur.next = null;
+                cur = prev.next;
+
+            }
+            if(cur == null)  //删除最后一个元素，cur已经为null, null = null.null,会引发空指针异常
+                break;
+            prev = cur; //先移动prev
+            cur = cur.next;
+        }
+    }
+
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder();
@@ -179,7 +196,32 @@ public class LinkedList<E> {
     }
 
 
+    public static void main(String[] args) throws Exception {
+        // 复习一下反射机制创建类
+        Class<?> clazz = Class.forName("com.geektech.linear_structure.base.LinkedList"); //返回的是一个类class
+        LinkedList<Integer> linkedList = (LinkedList) clazz.newInstance(); //父类引用指向子类对象
 
+        for(int i = 0 ; i < 7; i++){
+            linkedList.addFirst(i);
+        }
+        System.out.println(linkedList.toString());
+
+        linkedList.removeElement(0); // 在单向链表中删除元素e
+        System.out.println(linkedList);
+
+        linkedList.set(4,999);
+        System.out.println(linkedList.toString());
+
+        linkedList.remove(3);
+        System.out.println(linkedList.toString());
+
+        linkedList.removeFirst();
+        System.out.println(linkedList.toString());
+
+        linkedList.removeLast();
+        System.out.println(linkedList.toString());
+
+    }
 
 
 }
