@@ -1,8 +1,11 @@
 package com.geektech.Tools;
 
+import com.geektech.linear_structure.queue.ArrayQueue;
 import com.geektech.linear_structure.queue.LinkedQueue;
 import com.geektech.linear_structure.queue.LoopQueue;
 import com.geektech.linear_structure.queue.Queue;
+import com.geektech.linear_structure.stack.ArrayStack;
+import com.geektech.linear_structure.stack.LinkedStack;
 import com.geektech.linear_structure.stack.Stack;
 
 import java.util.Random;
@@ -59,31 +62,33 @@ public class Tool {
 
     public static void main(String[] args) {
 
+        //把注释取消，就可以使用了
+
         //test Stack的时间性能
 //        int dataSize = 10000000;
 //        LinkedStack<Integer> linkedStack = new LinkedStack<>();
 //        double time1 = Tool.testStack(linkedStack, dataSize);
 //        System.out.println("linkedStack , time: "+time1 + "秒");
 //
-//        MyStack<Integer> arrayStack = new MyStack<>();
+//        ArrayStack<Integer> arrayStack = new ArrayStack<>();
 //        double time2 = Tool.testStack(arrayStack, dataSize);
 //        System.out.println("arrayStack , time: "+time2 + "秒");
 
 
 
         //test Queue的时间性能
-        int dataSize = 100000000;
-        LoopQueue<Integer> loopQueue = new LoopQueue<>();
-        double time1 = Tool.testQueue(loopQueue, dataSize);
-        System.out.println("LoopQueue , time: "+time1+" 秒");
-
+//        int dataSize = 100000000;
+//        LoopQueue<Integer> loopQueue = new LoopQueue<>();
+//        double time1 = Tool.testQueue(loopQueue, dataSize);
+//        System.out.println("LoopQueue , time: "+time1+" 秒");
+//
 //        ArrayQueue<Integer> arrayQueue = new ArrayQueue<>();
 //        double time2 = Tool.testQueue(arrayQueue, dataSize);
 //        System.out.println("arrayQueue , time: "+time2+" 秒");
-
-        LinkedQueue<Integer> linkedQueue = new LinkedQueue<>();
-        double time3 = Tool.testQueue(linkedQueue, dataSize);
-        System.out.println("linkedQueue , time: "+time3+" 秒");
+//
+//        LinkedQueue<Integer> linkedQueue = new LinkedQueue<>();
+//        double time3 = Tool.testQueue(linkedQueue, dataSize);
+//        System.out.println("linkedQueue , time: "+time3+" 秒");
 
     }
 }
