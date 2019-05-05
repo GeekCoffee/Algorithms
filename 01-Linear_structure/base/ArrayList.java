@@ -12,7 +12,6 @@ package com.geektech.linear_structure.base;
  *        扩容：当size==capacity时，可以扩容2倍或者1.5倍都可以,java默认的是1.5倍  => O(n)
  *        缩容：装填因子=size/capacity <= 0.25时，使用缩容   => O(n)
  *        @Overrive toString=>重写Object类的toString方法  => O(n)
- *
  *        TODO:  排序功能、 有序去重功能、 无序去重功能
  *
  *  泛型知识复习： 1）泛型只支持类和对象，不支持基本数据类型，所以java开发了包装类来对基本数据类型的转化
@@ -265,6 +264,30 @@ public class ArrayList<E> {
     }
         str.append("]\n");
         return str.toString();
+    }
+
+    public static void main(String[] args) {
+        ArrayList<Integer> arr = new ArrayList<Integer>(20);
+
+        for(int i = 0; i < 20; i++)
+            arr.addFirst(i);
+        System.out.println(arr.toString());
+
+        arr.add(1,100);
+        System.out.println(arr.toString());
+
+        for(int i = arr.getSize()-1; i >= 4; i--)
+            arr.removeLast();
+        System.out.println(arr.toString());
+
+        arr.removeFirst();
+        System.out.println(arr.toString());
+
+        arr.removeLast();
+        System.out.println(arr.toString());
+
+        arr.removeElem(100);
+        System.out.println(arr.toString());
     }
 
 }
