@@ -1,4 +1,4 @@
-package com.geektech.Nonlinear_structure;
+package com.geektech.Nonlinear_structure.Set;
 
 import com.geektech.linear_structure.base.LinkedList;
 

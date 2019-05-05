@@ -1,4 +1,4 @@
-package com.geektech.Nonlinear_structure;
+package com.geektech.Nonlinear_structure.Set;
 import com.geektech.Semilinear_structure.BST;
 /**
  *  基于搜索树实现的Set，都是有序集合
