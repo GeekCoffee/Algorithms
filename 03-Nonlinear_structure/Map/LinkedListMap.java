@@ -3,13 +3,13 @@ package com.geektech.Nonlinear_structure.Map;
 /**
  *  基于单向链表实现的Map,  date = 5/5 2019 ,  author = chensheng
  *  ADT-构造器：constructor-Node3个 , LinkedListMap1个
- *      基本：getSize(), isEmpty()
- *      添加映射：add(k,v), 不能有重复元素
- *      查询映射：contains(k)
- *      得到某映射：get(k)
- *      替换某映射：set(k,newValue)
- *      删除映射：remove(e)
- *      辅助：getNode(k)->返回Node
+ *      基本：getSize(), isEmpty() => O(1)
+ *      添加映射：add(k,v), 不能有重复元素 => O(n)
+ *      查询映射：contains(k) => O(n)
+ *      得到某映射：get(k) => O(n)
+ *      替换某映射：set(k,newValue) => O(n)
+ *      删除映射：remove(e) => O(n)
+ *      辅助：getNode(k)->返回Node => O(n)
  *
  *  映射小知识：1）映射，也叫字典，在Python中就有dict类型
  *            2）映射就是一个key-value，这样一对一对的数据结构
@@ -124,5 +124,32 @@ public class LinkedListMap<K, V> implements Map<K, V> {
     @Override
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    //每次遍历都会不同，无序映射
+    @Override
+    public void printMap() {
+        Node cur = dummyHead.next;
+        while(cur != null){
+            System.out.println(cur.key + " : " + cur.value);
+            cur = cur.next;
+        }
+    }
+
+    public static void main(String[] args){
+        Map<String,String> map = new LinkedListMap<>();
+        map.add("id","20152211");
+        map.add("name","陈圣");
+        map.add("age","23");
+        map.add("coding skills","Golang、java、Docker etc...");
+        map.printMap();  //每次遍历都会不同，无序映射
+
+        map.set("name","陈云飞");
+        map.printMap();
+        System.out.println("size: " + map.getSize());
+
+        System.out.println("-----------");
+        map.remove("age");
+        map.printMap();
     }
 }

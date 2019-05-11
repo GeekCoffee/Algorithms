@@ -8,6 +8,7 @@ package com.geektech.Nonlinear_structure.Map;
  *      得到某映射：get(k)
  *      替换某映射：set(k,newValue)
  *      删除映射：remove(e)
+ *      遍历Map：不同的实现类中，遍历方法不同
  *
  *  映射小知识：1）映射，也叫字典，在Python中就有dict类型
  *            2）映射就是一个key-value，这样一对一对的数据结构
@@ -23,6 +24,7 @@ public interface Map<K,V> {
     int getSize();
     void set(K key, V value);
     boolean isEmpty();
+    void printMap();
 
 }
 
