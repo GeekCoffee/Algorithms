@@ -5,8 +5,8 @@ package com.geektech.linear_structure.base;
  *  ADT: 构造器：constructor2个  => O(c)
  *        基本：getSize, getCapacity, isEmpty => O(1)
  *        增加：add(index,e), addFirst(e), addLast(e) => O(n)
- *        替换：set(index,e),setFirst(e), setLast(e) => O(1)
- *        得到：get(index),getFirst(),getLast()  => 已知索引：O(1)
+ *        替换：set(index,e),setFirst(e), setLast(e), swap(i, j) => O(1)
+ *        获取：get(index),getFirst(),getLast()  => 已知索引：O(1)
  *        查找：find(e)=>index, contains(e)=>boolean => 未知索引：O(n)
  *        删除：remove(index)=>elem, removeFirst(), removeLast, removeElem(e)  => O(n)
  *        扩容：当size==capacity时，可以扩容2倍或者1.5倍都可以,java默认的是1.5倍  => O(n)
@@ -264,6 +264,16 @@ public class ArrayList<E> {
     }
         str.append("]\n");
         return str.toString();
+    }
+
+    //交换数组中索引为i和j的元素
+    public void swap(int i, int j){
+        //异常处理
+        if(i < 0 || i >= size || j < 0 || j >= size)
+            throw new IllegalArgumentException("索引异常");
+        E temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
     }
 
     public static void main(String[] args) {
