@@ -1,4 +1,4 @@
-package com.geektech.Tools;
+package com.geektech.Untils;
 
 import com.geektech.linear_structure.queue.ArrayQueue;
 import com.geektech.linear_structure.queue.LinkedQueue;
@@ -14,7 +14,7 @@ import java.util.Random;
  *  工具类,  date = 4/26 2019 ,  author = chensheng
  *  功能：1）测试各类数据结构的具体运行时间，查看具体时间性能的差异
  */
-public class Tool {
+public class Until {
 
 
     /**
