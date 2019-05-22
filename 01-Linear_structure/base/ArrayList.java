@@ -1,7 +1,7 @@
 package com.geektech.linear_structure.base;
 /**
  *  underlying implementation of ArrayList,  date = 4/19 2019 ,  author = chensheng
- *  ArrayList 就是 ArrayList
+ *  ArrayList 就是 Vector
  *  ADT: 构造器：constructor2个  => O(c)
  *        基本：getSize, getCapacity, isEmpty => O(1)
  *        增加：add(index,e), addFirst(e), addLast(e) => O(n)
