@@ -10,15 +10,16 @@ import com.geektech.linear_structure.stack.LinkedStack;
  *  BinarySearchTree - BST,  date = 1/5 2019 ,  author = chensheng
  *  ADT: 构造器：constructor1个，包含count计数器  => O(c)
  *        基本：getSize, isEmpty => O(1)
- *        增加：add(e)，add2(e)
- *        查询：contains(e),findMax, findMin()
- *        删除：removeMin, removeMax,
- *             remove(e)：使用了Hibbard提出的Hibbard Deletion算法，1962年
+ *        增加：add(key) => O(h),平均O(logn),最坏O(n)
+ *        查询：contains(e),findMax, findMin() => O(h),平均O(logn),最坏O(n)
+ *        删除：removeMin, removeMax => O(h),平均O(logn),最坏O(n)
+ *             remove(e)：使用了Hibbard提出的Hibbard Deletion算法，1962年  => O(h),平均O(logn),最坏O(n)
  *        遍历：preOrderRecur,inOrderRecur,postOrderRecur,levelOrder-借助queue-图的广度优先遍历
  *        非递归：preOrder_DP,preOrder_DP_Command,inOrder_DP_Command,postOrder_DP_Command
  *        时间复杂度：O(n)，取决于node的数量; 空间复杂度：O(h),取决于树的高度
  *        Z字形打印BST：printBST()-private-printBST-getSpace , 参考左神的代码
  *        //TODO  Morris遍历
+ *
  *
  *
  *
@@ -32,6 +33,13 @@ import com.geektech.linear_structure.stack.LinkedStack;
  *
  *  其他：1）前中后遍历都是图的深度优先遍历，层序遍历是图的广度优先遍历
  *       2）广度优先遍历的意义在于：①更快找到问题的解  ②常用于算法设计中的-最短路径
+ *
+ *
+ *  补充知识：1）满二叉树是每一层的节点都是满的
+ *          2）完全二叉树是最后一层的节点的右半部分有缺失节点，平衡因子为1
+ *          3）堆的常用实现是用完全二叉树来实现的，结合来说就叫“二叉堆”，堆还有其他实现如：左式堆等
+ *              a.最大堆的定义：堆中某一节点的值总是不大于其父节点的值，无论从全局还是任一局部都满这一特性。
+ *              b.最小堆的定义：堆中某一节点的值总是小于其孩子节点的值。
  *
 **/
 public class BST<E extends Comparable<E>>{
@@ -50,7 +58,7 @@ public class BST<E extends Comparable<E>>{
     }
 
     private class Command{
-        public String s;  // go, print
+        public String s;  // go, print命令
         public Node node;
         public Command(String s, Node node){
             this.s = s;
@@ -354,12 +362,12 @@ public class BST<E extends Comparable<E>>{
 
     private Node removeMin(Node node){
         if(node.left == null){ //递归终止条件， 此时已经是最小元素
-            Node rightNode = node.right; // 把删除节点的右子树赋值给rightNode
+            Node rightNode = node.right; //把要删除节点的右子树赋值给rightNode
             node.right = null;
             size --;
             return rightNode;  //返回删除节点的右子树
         }
-        node.left = removeMin(node.left);// 把右子树继续成为该删除节点的父亲节点的左子树
+        node.left = removeMin(node.left);//把右子树继续成为该删除节点的父亲节点的左子树
         return node;
     }
 
@@ -385,7 +393,7 @@ public class BST<E extends Comparable<E>>{
      * 当e有左右子树的时候，使用Hibbard提出的Hibbard Deletion
      * 1)设待删除元素为d, 找到s = findMin(d->rigth)
      * 2)s是d的后继元素，当然也可以使用d的前驱最大的元素
-     * 3)s->rigth = removeMin(d->right) //返回待删除元素的右子树中删除了最小元素min，之后的root索引
+     * 3)s->rigth = removeMin(d->right) //返回待删除元素的右子树中删除了最小元素min，之后的node索引
      * 4)s->left = d->left
      * 5)s是代替d的新节点
      * @param e
@@ -432,7 +440,7 @@ public class BST<E extends Comparable<E>>{
             //successor是继承者的意思，取代待删除节点的位置，以保持BST的特性
             //不用size--了，因为在removeMin中已经删除了一个元素了，并且size--了
             Node successor = findMin(node.right);   //step1：找到e右子树中元素最小的元素，并赋给successor
-            successor.right = removeMin(node.right); //step2：删除e右子树中最小的元素，并把root句柄赋值给successor
+            successor.right = removeMin(node.right); //step2：删除e右子树中最小的元素，并把以node为根的子树句柄赋值给successor
             successor.left = node.left; // step3：把待删除节点e的左子树索引赋值给successor.left
             node.left = node.right = null; // step4：把待删除节点置为null，GC会自动把它从内存在回收起来，就达到删除的目的了
             return successor;
