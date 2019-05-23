@@ -5,6 +5,7 @@ import com.geektech.linear_structure.queue.LoopQueue;
 import com.geektech.linear_structure.queue.Queue;
 import com.geektech.linear_structure.stack.Stack;
 import com.geektech.linear_structure.stack.LinkedStack;
+import java.util.LinkedList;
 
 /**
  *  BinarySearchTree - BST,  date = 1/5 2019 ,  author = chensheng
@@ -480,18 +481,66 @@ public class BST<E extends Comparable<E>>{
     }
 
 
+    //对BST做先序遍历序列化
+    public void serialize(LinkedList<String> list){
+        this.serialize(root,list);
+    }
+
+    private void serialize(Node node, LinkedList<String> list){
+
+        //递归基条件
+        if(node == null){ //当node为null时，插入'#!'
+            list.addLast("#");
+            list.addLast("!");
+            return;
+        }else { //当node不为null时，且值为0时
+            int value = (Integer) node.e;
+            if(value == 0){
+                list.addLast("0");
+                list.addLast("!");
+                serialize(node.left, list); //递归遍历左子树
+                serialize(node.right, list); //递归遍历右子树
+                return;
+            }
+
+            int tmpNum = 0;
+            LinkedList<String> tmpList = new LinkedList<>();
+            while(value != 0){
+                tmpNum = value % 10;  //先取出最右边的位数
+                tmpList.addLast(tmpNum + "");
+                value /= 10;  //规模每次减10分之一，如：从200 /= 10 ,得20
+            }
+
+            while(!tmpList.isEmpty()){ //循环取出tmpList中的数
+                tmpNum = Integer.parseInt(tmpList.removeLast()); //String -> Integer
+                list.addLast(""+tmpNum);
+            }
+            list.addLast("!");  //感叹号为结束标志
+
+            //继续递归遍历
+            serialize(node.left, list);
+            serialize(node.right, list);
+
+            return;
+        }
+
+    }
+
+    //TODO..... 先序遍历的反序列化
+
+
 
 
 
     //在mani函数中测试你的代码
     public static void main(String[] args){
-        int[] nums = {3,4,5,1,2,0};
+        int[] nums = {333,444,555,111,222,0};
         BST<Integer> bst = new BST<>();
         for(int n: nums)
-            bst.add(n);
+            bst.add(n);  //创建二分搜索树树的过程
 
-//        bst.preOrderRecur();
-//        System.out.println();
+        bst.preOrderRecur();
+        System.out.println();
 //        bst.preOrder_DP_Command();
 
 //          bst.inOrderRecur();
@@ -510,7 +559,14 @@ public class BST<E extends Comparable<E>>{
 //          bst.remove(3); // 尝试删除根节点root
 //          bst.inOrderRecur();
 //          System.out.println();
-        bst.printBST();
+//        bst.printBST();  //直观打印二叉树
+
+        LinkedList<String> list = new LinkedList<>();
+        bst.serialize(list);
+
+        for(int i = 0; i < list.size(); i++){
+            System.out.print(list.get(i) + " ");
+        }
     }
 
 }
