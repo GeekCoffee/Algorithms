@@ -19,6 +19,7 @@ import java.util.LinkedList;
  *        非递归：preOrder_DP,preOrder_DP_Command,inOrder_DP_Command,postOrder_DP_Command
  *        时间复杂度：O(n)，取决于node的数量; 空间复杂度：O(h),取决于树的高度
  *        Z字形打印BST：printBST()-private-printBST-getSpace , 参考左神的代码
+ *        序列化与反序列化：serialize(&list) 、BST bst unSerizlize(&list){....}
  *        //TODO  Morris遍历
  *
  *
