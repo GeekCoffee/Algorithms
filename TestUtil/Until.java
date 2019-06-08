@@ -1,11 +1,8 @@
-package com.geektech.Untils;
+package com.geektech.Tools;
 
-import com.geektech.linear_structure.queue.ArrayQueue;
-import com.geektech.linear_structure.queue.LinkedQueue;
-import com.geektech.linear_structure.queue.LoopQueue;
+import com.geektech.Nonlinear_structure.UnionFind.*;
+import com.geektech.Semilinear_structure.MaxHeap;
 import com.geektech.linear_structure.queue.Queue;
-import com.geektech.linear_structure.stack.ArrayStack;
-import com.geektech.linear_structure.stack.LinkedStack;
 import com.geektech.linear_structure.stack.Stack;
 
 import java.util.Random;
@@ -14,7 +11,7 @@ import java.util.Random;
  *  工具类,  date = 4/26 2019 ,  author = chensheng
  *  功能：1）测试各类数据结构的具体运行时间，查看具体时间性能的差异
  */
-public class Until {
+public class Tool {
 
 
     /**
@@ -56,8 +53,74 @@ public class Until {
         }
 
         long endTime = System.nanoTime();
-        return (endTime-startTime)/1000000000.0;
+        return (endTime-startTime) / 1000000000.0;
     }
+
+    /**
+     * 测试普通建堆和heapify算法建堆的时间性能
+     * @param arr
+     * @param isHeapify
+     * @return
+     */
+    public static double testMaxHeap(Integer[] arr, boolean isHeapify){
+        MaxHeap<Integer> maxHeap;
+        long startTime = System.nanoTime();
+        if(isHeapify)
+            maxHeap = new MaxHeap<Integer>(arr);  //heapify建堆
+        else{  //必须要有else，不能同时建2个堆
+            maxHeap = new MaxHeap<>(); //普通建堆
+            for(int i = 0; i < arr.length; i++)
+                maxHeap.add(arr[i]); //从数组的第一个元素开始，从零从空建堆
+        }
+
+        int[] newArray = new int[arr.length];
+        for(int i = 0; i < newArray.length; i++) //建完堆后，两者再进行简单的堆排序
+            newArray[i] = maxHeap.extractMax();
+
+        //检测排序是否正确，从大到小的堆排序
+        for(int i = 1; i < newArray.length; i++)
+            if(newArray[i-1] < newArray[i])
+                throw new IllegalArgumentException(isHeapify?"heapify建堆的排序顺序性有错误！":"普通建堆的排序顺序性有错误！");
+        long endTime = System.nanoTime();
+        return (endTime - startTime) / 1000000000.0;
+    }
+
+    /**
+     * 测试不同版本的并查集性能
+     * @param uf
+     * @param ops 操作次数
+     * @return
+     */
+    public static double testUnionFind(UnionFind uf, int ops){
+
+        int size = uf.getSize();
+
+        Random random = new Random();
+        long startTime = System.nanoTime();
+
+        //先做ops次的合并操作
+        for(int i = 0 ; i < ops; i ++){
+            int a = random.nextInt(size);  //在集合中随机一个数，[0,size)前闭后开
+            int b = random.nextInt(size);
+            uf.unionElem(a, b);
+        }
+
+        //再做ops次的查询两点之间是否相连操作
+        for(int i = 0; i < ops; i ++){
+            int a = random.nextInt(size);
+            int b = random.nextInt(size);
+            uf.isConnected(a, b);
+        }
+
+
+        long endTime = System.nanoTime();
+
+        return (endTime - startTime) / 1000000000.0;  //把ns转换为s
+
+    }
+
+
+
 
 
     public static void main(String[] args) {
@@ -89,6 +152,48 @@ public class Until {
 //        LinkedQueue<Integer> linkedQueue = new LinkedQueue<>();
 //        double time3 = Tool.testQueue(linkedQueue, dataSize);
 //        System.out.println("linkedQueue , time: "+time3+" 秒");
+
+        //test MaxHeap不同建堆算法的时间性能
+//        int dataSize = 1000000;  //100万数据集
+//        Integer[] testArray = new Integer[dataSize];
+//        Random random = new Random();
+//        for(int i = 0; i < testArray.length; i++){
+//            testArray[i] = random.nextInt(Integer.MAX_VALUE); // 随机范围[0,MAX_VALUE]
+//        }
+//        double heapifyTime = testMaxHeap(testArray, true);
+//        System.out.println("数据集：" + dataSize + " , heapify建堆：" + heapifyTime + " 秒");
+//
+//        double maxHeapTime = testMaxHeap(testArray, false);
+//        System.out.println("数据集：" + dataSize + " , 普通建堆：" + maxHeapTime + " 秒");
+
+
+        //test UnionFind不同版本下的时间性能
+        int dataSize = 10000000;
+        int ops = 10000000;    //操作次数
+//        UnionFind uf1 = new UnionFind1(dataSize);
+//        double time1 = testUnionFind(uf1, ops);
+//        System.out.println("并查集UnionFind1版本，总时间：" + time1 + " s");
+//
+//        UnionFind uf2 = new UnionFind2(dataSize);
+//        double time2 = testUnionFind(uf2, ops);
+//        System.out.println("并查集UnionFind2版本，总时间：" + time2 + " s");
+
+        UnionFind uf3 = new UnionFind3(dataSize);
+        double time3 = testUnionFind(uf3, ops);
+        System.out.println("并查集UnionFind3版本，总时间：" + time3 + " s");
+
+        UnionFind uf4 = new UnionFind4(dataSize);
+        double time4 = testUnionFind(uf4, ops);
+        System.out.println("并查集UnionFind4版本，总时间：" + time4 + " s");
+
+        UnionFind uf5Pc = new UnionFind5_PathCompress(dataSize);
+        double time5 = testUnionFind(uf5Pc, ops);
+        System.out.println("并查集UnionFind5版本，总时间：" + time5 + " s");
+
+        UnionFind uf6PcRecur = new UnionFind6_PathCompression_Recur(dataSize);
+        double time6 = testUnionFind(uf6PcRecur, ops);
+        System.out.println("并查集UnionFind6版本，总时间：" + time6 + " s");
+
 
     }
 }
