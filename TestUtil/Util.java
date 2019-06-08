@@ -1,4 +1,8 @@
+<<<<<<< HEAD:TestUtil/Until.java
 package com.geektech.Tools;
+=======
+package com.geektech.Utils;
+>>>>>>> 8bcd01e1f1717c850db52709e40ae718f83a4725:TestUtil/Util.java
 
 import com.geektech.Nonlinear_structure.UnionFind.*;
 import com.geektech.Semilinear_structure.MaxHeap;
@@ -11,7 +15,11 @@ import java.util.Random;
  *  工具类,  date = 4/26 2019 ,  author = chensheng
  *  功能：1）测试各类数据结构的具体运行时间，查看具体时间性能的差异
  */
+<<<<<<< HEAD:TestUtil/Until.java
 public class Tool {
+=======
+public class Util {
+>>>>>>> 8bcd01e1f1717c850db52709e40ae718f83a4725:TestUtil/Util.java
 
 
     /**
